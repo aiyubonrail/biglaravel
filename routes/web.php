@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::resource('menu','MenuController');
+Route::Post('/addmenu', 'MenuController@store');
 
 
 Route::get('/home', 'HomeController@index')->name('home');

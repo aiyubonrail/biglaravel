@@ -18,6 +18,10 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    
+
+    <!-- Font Awesome -->
+   
 </head>
 <body>
     <div id="app">
@@ -76,5 +80,21 @@
             @yield('content')
         </main>
     </div>
+     {{-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script> --}}
+    <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap JavaScript -->
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.1/js/bootstrap.min.js"></script>
+
+    <!-- toastr notifications -->
+    {{-- <script type="text/javascript" src="{{ asset('toastr/toastr.min.js') }}"></script> --}}
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+    <!-- icheck checkboxes -->
+    <script type="text/javascript" src="{{ asset('icheck/icheck.min.js') }}"></script>
+
+    <!-- Delay table load until everything else is loaded -->
+   
+
 </body>
 </html>

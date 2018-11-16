@@ -40,7 +40,11 @@ class LoginController extends Controller
 
     public function authenticated(Request $request, $user)
     {
-        if (!$user->verified) {
+        if ($user->verified) {
+            return redirect("admin");
+        }
+     else 
+        {
             auth()->logout();
             return back()->with('warning', 'akun anda harus mendapat konfirmasi terlebih dahulu, kami telah mengirimnya ke email anda. Silahkan buka emailmya');
         }
