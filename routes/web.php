@@ -15,8 +15,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('menu','MenuController');
-Route::Post('/addmenu', 'MenuController@store');
+Route::post('addmenu', 'MenuController@storeMenu')->name('addmenu');
+Route::post('addsubmenu', 'MenuController@storesubMenu')->name('addsubmenu');
+Route::get('dashboard', 'DashboardController@index')->name('dashboard');
+Route::get('addsuperuser', 'DashboardController@index')->name('addsuperuser');
 
 
 Route::get('/home', 'HomeController@index')->name('home');

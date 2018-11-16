@@ -8,12 +8,11 @@ class Menu extends Model
 {
     //
     protected $table='menus';
-    protected $fillable = [
-        'kode_menu', 'menu',
-    ];
+    protected $primary = 'kode_menu';
+
 	
 	public function submenu()
     {
-        return $this->hasOne('App\Submenu');
+        return $this->hasOne('App\Submenu','kode_menu');
     }
 }

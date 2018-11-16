@@ -5,92 +5,45 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Menu;
+use App\SubMenu;
+
 use DB;
 use Illuminate\Support\Facades\Redirect;
 
-class MenuController extends Controller
-{
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        
-        $this->middleware(['auth']);
 
-    }
-
-      public function index()
-    {
-
-        $menus = Menu::orderBy('id', 'desc')->get();
-        return view('home', ['menus' => $menus]);
-    }
-
-
-    public function store(Request $request)
-    {
-      
-            $menu = new Menu();
-            $menu->kode_menu = $request->kode_menu;
-            $menu->menu = $request->menu;
-            $menu->save();
-         return $request->all();
-
-    }
-
-
-
+class MenuController extends Controller {
     
-    public function show($id)
-    {
-        $menus = Menu::findOrFail($id);
-        return view('menu.show', ['menus' => $menus]);
+    public function storeMenu(Request $request) {
+        $data = new Menu ();
+        $data->kode_menu = $request->kode_menu;
+        $data->menu = $request->menu;
+        $data->save ();
+
+    return back()->with('status', 'Menu baru berhasil ditambah');
     }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $validator = Validator::make(Input::all(), $this->rules);
-        if ($validator->fails()) {
-            return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
-        } else {
-            $menus = Menu::findOrFail($id);
-            $menu->kode_menu = $request->kode_menu;
-            $post->menu = $request->menu;
-            $post->save();
-            return response()->json($post);
-        }
-    }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $menu = Menu::findOrFail($id);
-        $menu->delete();
-        return response()->json($menu);
+    
+    public function storesubMenu(Request $request) {
+        $data = new SubMenu ();
+        $data->kode_menu = $request->kode_menu;
+        $data->submenu = $request->submenu;
+        $data->save ();
+
+    return back()->with('status', 'Sub Menu baru berhasil ditambah');
     }
 
+    public function viewmenu() {
+        $data = Menu::all ();
+        return $data;
+    }
+    public function deleteMenu(Request $request) {
+        $data = Menu::find ( $request->id )->delete ();
+    }
+    public function editMenu(Request $request, $id){
+        $data =Menu::where('id', $id)->first();
+        $data->kode_menu = $request->get('kode_menu');
+        $data->menu = $request->get('menu');
+        $data->save();
+        return $data;
+    }
 
 }
