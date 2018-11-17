@@ -25,7 +25,12 @@
 
           <!--Card-->
           <div class="card">
-              
+              <?php foreach ($data['menu'] as $key => $value) {
+                  # code...
+                var_dump($value);
+              }
+
+              ?>
                <table class="table table-striped custab">
     <thead>
         <tr>

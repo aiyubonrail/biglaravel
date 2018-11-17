@@ -21,10 +21,8 @@ class DashboardController extends Controller
    	 public function index()
    	 {   
 
-      $data['menu'] = Menu::join('submenus', 'submenus.kode_menu', '=', 'menu.kode_menu')
-        ->groupBy('menu.kode_menu')
-        ->take(12);
-   die(var_dump($data));
+      $data['menu'] = Menu::join('submenus', 'submenus.kode_menu', '=', 'menus.kode_menu')
+        ->get();
      // Menu::join('submenus', 'submenus.kode_menu', '=', 'menu.kode_menu')->get();
       $data['submenu'] = SubMenu::orderBy('id', 'desc')->get();
 

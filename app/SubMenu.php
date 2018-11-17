@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class SubMenu extends Model
 {
     //
-     public function menu()
-    {
-        return $this->hasOne('App\Menu','kode_menu');
-    }
+            protected $fillable = ['kode_menu', 'submenu'];
+
+public function menu()
+{
+    return $this->belongsTo('App\Menu', 'kode_menu');
+}
 }
 
 
