@@ -1,3 +1,21 @@
+
+
+## About Biglaravel Case Study
+
+Biglaravel Case Study dibuat untuk menyelesaikan sebuah kasus yang diberikan oleh perusahaan BIG tanggal 15 November 2018
+Aplikasi ini dibuat menggunakan :
+ - PHP 7.2.11 (LATEST Version untuk saat ini)
+ - Framework Laravel 5.7 (Latest Version saat ini)
+ - Apache/2.4.35 (Win64)
+ - Database : PostgreSQL version 11.0-1 
+ - Untuk Front End nya, menggunakan :
+   - BOOTSTRAB LATEST VERSION dan JUGA AJAX.
+
+Terima Kasih, Muhammad Aiyub
+
+
+
+
 <p align="center"><img src="https://laravel.com/assets/img/components/logo-laravel.svg"></p>
 
 <p align="center">
