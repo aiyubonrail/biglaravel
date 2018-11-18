@@ -19,13 +19,14 @@ class DashboardController extends Controller
    	 
 
    	 public function index()
-   	 {   
-
-      $data['menu'] = Menu::join('submenus', 'submenus.kode_menu', '=', 'menus.kode_menu')
-        ->get();
-     // Menu::join('submenus', 'submenus.kode_menu', '=', 'menu.kode_menu')->get();
-      $data['submenu'] = SubMenu::orderBy('id', 'desc')->get();
-
+   	  {     
+ 
+   // $results=DB::table('sub_menus')
+   //  ->join('menus','menus.menu_id','=','sub_menus.menu_id')->get();
+   //  return $results;
+         $data['menu'] = Menu::orderBy('menu_id', 'Desc')->get();
+    $data['submenu'] = DB::table('sub_menus')
+    ->join('menus','menus.menu_id','=','sub_menus.menu_id')->get();;
         return view('home', ['data' => $data]);
 
 

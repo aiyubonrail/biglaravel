@@ -1,23 +1,21 @@
 <?php
 
-
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Input;
+use Illuminate\Http\Request;
 use Validator;
 use Response;
-use View;
-use DB;
-use App\Menu;
+use App\Menuz;
 use App\SubMenu;
 
-class MenuController extends Controller {
-    
-
-
-     protected $rules =
+use View;
+use DB;
+class MenuzController extends Controller
+{
+    /**
+    * @var array
+    */
+    protected $rules =
     [
         'menu' => 'required|min:2|max:32|regex:/^[a-z ,.\'-]+$/i',
     ];
@@ -28,11 +26,15 @@ class MenuController extends Controller {
      */
     public function index()
     {
-        $posts = Menu::orderBy('menu_id', 'desc')->get();
+        $posts = Menuz::orderBy('menu_id', 'desc')->get();
        
+          $submenu = SubMenu::orderBy('sub_menus.menu_id','desc')
+          ->join('menuz','menuz.menu_id','=','sub_menus.menu_id')
+          ->get();
         
-        return view('menu.index', ['posts' => $posts]);
         
+        return view('menuz.index', ['posts' => $posts ,'submenu' => $submenu]);
+    	
     }
     /**
      * Show the form for creating a new resource.
@@ -51,18 +53,18 @@ class MenuController extends Controller {
      */
     public function store(Request $request)
     {
-         
+    	 
         $validator = Validator::make(Input::all(), $this->rules);
         if ($validator->fails()) {
             return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
         } else {
 
-            $post = new Menu();
+            $post = new Menuz();
             $post->menu = $request->menu;
             $post->id = $request->content;
 
             $post->save();
-            return back()->with('status', 'Menu baru berhasil ditambah');
+            return response()->json($post);
         }
     }
     /**
@@ -73,8 +75,8 @@ class MenuController extends Controller {
      */
     public function show($id)
     {
-        $post = Menu::findOrFail($id);
-        return view('menu.show', ['post' => $post]);
+        $post = Menuz::findOrFail($id);
+        return view('menuz.show', ['post' => $post]);
     }
     /**
      * Show the form for editing the specified resource.
@@ -99,7 +101,7 @@ class MenuController extends Controller {
         if ($validator->fails()) {
             return Response::json(array('errors' => $validator->getMessageBag()->toArray()));
         } else {
-            $post = Menu::findOrFail($id);
+            $post = Menuz::findOrFail($id);
             $post->menu = $request->menu;
             $post->save();
             return response()->json($post);
@@ -113,7 +115,7 @@ class MenuController extends Controller {
      */
     public function destroy($id)
     {
-        $post = Menu::findOrFail($id);
+        $post = Menuz::findOrFail($id);
         $post->delete();
         return response()->json($post);
     }
@@ -122,17 +124,5 @@ class MenuController extends Controller {
      *
      * @return \Illuminate\Http\Response
      */
-    
-    public function storesubMenu(Request $request)
-    {
-         
-
-            $post = new SubMenu();
-            $post->submenu = $request->submenu;
-            $post->menu_id = $request->kode_menu;
-
-            $post->save();
-            return back()->with('status', 'Sub Menu baru berhasil ditambah');
-        
-    }
+   
 }

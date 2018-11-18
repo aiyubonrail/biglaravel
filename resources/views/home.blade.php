@@ -1,12 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
                 <div class="card-header">Dashboard                
-</div>
+                  </div>
                 <div class="card-body">
                     @if (session('status'))
                         <div class="alert alert-success" role="alert">
@@ -19,18 +22,13 @@
                     
                     <button type="button" class="btn btn-primary form-control" data-toggle="modal" data-target="#addsubMenu" style="padding: 5px;margin-right:10px;width:30% "> Create Submenu</button>
 
-<p /><p />
+<p /><p />     
 
                     <div class="col-md-12 mb-4"><h3 style="font-weight: bold;padding: 5px"> Daftar Menu</b></h3>
 
           <!--Card-->
           <div class="card">
-              <?php foreach ($data['menu'] as $key => $value) {
-                  # code...
-                var_dump($value);
-              }
-
-              ?>
+             
                <table class="table table-striped custab">
     <thead>
         <tr>
@@ -39,12 +37,25 @@
             <th>Submenu</th>
             <th class="text-center">Action</th>
         </tr>
-    </thead>@foreach($data['menu'] as $key => $value)
+    </thead>@foreach($data['submenu'] as $key => $value)
             <tr>
-                <td>{{ $value['id'] }}</td>
-                <td>{{ $value ['menu'] }}</td>
-                <td>{{ $value['submenu'] }}</td>
-                <td class="text-center"><a class='btn btn-info btn-xs' href="#"><span class="glyphicon glyphicon-edit"></span> Edit</a> <a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a></td>
+                <td> 
+                    {{ $value->id }}</td>
+                <td>
+                            {{ $value->menu }}
+
+                </td>
+                <td>{{ $value->submenu }}</td>
+                <td class="text-center">
+
+ <button class="show-modal btn btn-default" data-id="{{$value->id}}" data-menu_id="{{$value->menu_id}}" data-menu="{{$value->menu}}" 
+    data-submenu="{{$value->submenu}}">
+                                        <span class="glyphicon glyphicon-eye-open"></span> Edit</button>
+                    
+                  
+
+
+                    <a href="#" class="btn btn-danger btn-xs" data-toggle="modal"  data-target="#hapusmenu"><span class="glyphicon glyphicon-remove"></span> Delete</a></td>
             </tr>
             @endforeach
     </table>
@@ -72,8 +83,8 @@
 
                   <!--firstName-->
                   <div class="md-form ">
-                    <input type="numeric" class="form-control" name="kode_menu">
-                    <label for="kode_menu" class="">Kode_menu</label>
+                    <input type="numeric" class="form-control" name="menu_id">
+                    <label for="menu_id" class="">Kode_menu</label>
                   </div>
 
                 </div>
@@ -145,7 +156,7 @@
 
                   <select class="custom-select d-block w-100" id="menu" required name="kode_menu">
                     @foreach($data['menu'] as $key =>$value)
-                       <option value=" {{ $value['kode_menu']}} "> {{$value['menu']}}
+                       <option value=" {{ $value['menu_id']}} "> {{$value['menu']}}
                         @endforeach
                   </select>
                   <div class="invalid-feedback">
@@ -163,6 +174,75 @@
                   <!--lastName-->
                   <div class="md-form">
                     <input type="text" id="submenu" class="form-control" name="submenu">
+                    <label for="submenu" class="">Nama Sub Menu</label>
+                  </div>
+
+                </div>
+                <!--Grid column-->
+
+              </div>
+            
+
+         
+              <hr>
+
+           
+              <hr class="mb-4">
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Tambah</button>
+
+            </form></div>
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- edit sub -->
+<div id="editsubmenu" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">Edit Sub Menu
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+              <div class="card">
+
+            <!--Card content-->
+               {!! Form::open(array( 'class' => 'card-body', 'route' => 'addsubmenu', )) !!}
+
+              <!--Grid row-->
+              <div class="row">
+
+                <!--Grid column-->
+                <div class="col-md-12 mb-2">
+
+                  <!--firstName-->
+                  <div class="col-md-12 mb-4">
+
+                  <label for="country">Menu</label>                    
+                    <div class="md-form">
+                    <input type="text" id="id_edit" class="form-control" name="submenu" disabled>
+                    <label for="submenu" class="">Nama Sub Menu</label>
+                  </div>
+                  <select class="custom-select d-block w-100" id="menu_edit" required name="kode_menu">
+                    @foreach($data['menu'] as $key =>$value)
+                       <option value=" {{ $value['menu_id']}} "> {{$value['menu']}}
+                        @endforeach
+                  </select>
+                  <div class="invalid-feedback">
+                    Silahkan Pilih Menu.
+                  </div>
+
+                </div>
+                 
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-md-12 mb-2">
+
+                  <!--lastName-->
+                  <div class="md-form">
+                    <input type="text" id="submenu_edit" class="form-control" name="submenu">
                     <label for="submenu" class="">Nama Sub Menu</label>
                   </div>
 
@@ -196,7 +276,53 @@
             </div>
         </div>
     </div>
+<!-- edit sub -->
 
+    <!-- Modal form to show a post -->
+    <div id="editModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">                    
+
+                <div class="modal-header">
+                    <h5 class="modal-title"></h4><button type="button" class="close text-right" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action=""  >
+                    <input type="hidden" id="_token" value="{{ csrf_token() }}">
+
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                <input type="name" class="form-control" id="id_show" disabled="true" name='id' disabled>
+                            </div>
+                            <label class="control-label col-sm-5">Menu Sekarang:</label>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" id="menu_show" disabled>
+                            </div><p />
+                             <div class="col-sm-12">
+                                <select  class="form-control" id="menu_show" name="menu_id"><option id='menu_show' name="menu_id">Pilih Menu Baru</option>
+                                                                @foreach($data['submenu'] as $v => $k )
+                                                                <option value="{{ $k->menu_id}}">{{ $k->menu }}</option>   
+                                                                @endforeach
+                            </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-3" for="title">Submenu:</label>
+                            <div class="col-sm-12">
+                                <input type="name" class="form-control" id="submenu_show" name="submenu">
+                            </div>
+                        </div>
+                         <div class="modal-footer">
+                        
+                        <input id="submit" class="btn btn-warning edit" name="submit" type="submit" value="Edit">
+                    </div>
+
+                    </form>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
 <div id="addsuperuser" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -212,7 +338,7 @@
               <div class="row">
 
                 <!--Grid column-->
-                <div class="col-md-6 mb-2">
+                <div class="col-md-12 mb-2">
 
                   <!--firstName-->
                   <div class="md-form ">
@@ -224,7 +350,7 @@
                 <!--Grid column-->
 
                 <!--Grid column-->
-                <div class="col-md-6 mb-2">
+                <div class="col-md-12 mb-2">
 
                   <!--lastName-->
                   <div class="md-form">
@@ -290,11 +416,85 @@
             </div>
         </div>
     </div>
+<div class="modal fade" id="hapusmenu" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ModalLabel">Hapus Menu</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <h3>Apakah Anda yakin ingin menghapus?</h3>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+        <button type="button" class="btn btn-danger">Ya</button>
+      </div>
+    </div>
+  </div>
+</div><!--edit modal-->
+
+
+<!-- edit modal-->
 
                 </div>
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+ $(document).on('click', '.show-modal', function() {
+            $('.modal-title').text('Edit Menu');
+            $('#id_show').val($(this).data('id'));
+            $('#menu_show').val($(this).data('menu'));
+            $('#submenu_show').val($(this).data('submenu'));
+            $('#bmenu_id_show').val($(this).data('menu_id'));
+
+            $('#editModal').modal('show');
+        });
+
+ $('#editformsubmenu').submit(function(e){
+    e.preventDefault();
+    $.ajax({
+        url:'/addsubmenu',
+        type:'post',
+        data:$('#editformsubmenu').serialize(),
+        success:function(){
+            //whatever you wanna do after the form is successfully submitted
+        }
+    });
+});
+ $('.modal-footer').on('click', '.edit', function() {
+            $.ajax({
+                type: 'PUT',
+                url: 'menu/edit/' + id,
+                data: {
+                    '_token': $('input[name=_token]').val(),
+                    'id': $("#id_show").val(),
+                    'menu': $('#menu_show').val(),
+                    'submenu': $('#submenu_show').val(),
+                    'idmenu' : $('#menu_id_show').val(),
+
+                },
+                success: function(data) {
+                    $('.errorTitle').addClass('hidden');
+                    $('.errorContent').addClass('hidden');
+                    if ((data.errors)) {
+                        setTimeout(function () {
+                            $('#editModal').modal('show');
+                            toastr.error('Validation error!', 'Error Alert', {timeOut: 5000});
+                        }, 500);
+                       
+                    } 
+                }
+            });
+        });
+
+    </script>
+        <script src="https://code.jquery.com/jquery-2.2.4.js" integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI=" crossorigin="anonymous"></script>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 @endsection

@@ -4,13 +4,20 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+class Menuz extends Model
 {
     //
-    protected $table = 'menus';
-    protected $primariKey = 'menu_id';
-    protected $fillable = ['id', 'menu'];
-
+    protected $table = 'menuz';  
+ 	protected $primariKey = 'menu_id';
+    protected $fillable = ['menu'];
+    /**
+	 * Get excerpt from string
+	 * 
+	 * @param String $str String to get an excerpt from
+	 * @param Integer $startPos Position int string to start excerpt from
+	 * @param Integer $maxLength Maximum length the excerpt may be
+	 * @return String excerpt
+	 */
 	public static function getExcerpt($str, $startPos = 0, $maxLength = 50) {
 		if(strlen($str) > $maxLength) {
 			$excerpt   = substr($str, $startPos, $maxLength - 6);
@@ -23,9 +30,4 @@ class Menu extends Model
 		
 		return $excerpt;
 	}
-
-	public function submenu()
-    {
-        return $this->hasMany('App\SubMenu');
-    }
 }
