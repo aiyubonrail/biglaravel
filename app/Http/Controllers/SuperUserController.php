@@ -49,7 +49,7 @@ class SuperUserController extends Controller
         $admins->id_admin = $request->id_admin;
         $admins->password=bcrypt($request->password);
         $admins->save();
-        return redirect()->route('admin.auth.login');
+        return redirect()->route('super.auth.login');
     }
     /**
      * Display the specified resource.
