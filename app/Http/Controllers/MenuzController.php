@@ -12,9 +12,7 @@ use View;
 use DB;
 class MenuzController extends Controller
 {
-    /**
-    * @var array
-    */
+    
     protected $rules =
     [
         'menu' => 'required|min:2|max:32|regex:/^[a-z ,.\'-]+$/i',
@@ -36,21 +34,12 @@ class MenuzController extends Controller
         return view('menuz.index', ['posts' => $posts ,'submenu' => $submenu]);
     	
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function create()
     {
         //
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
     	 
@@ -61,40 +50,25 @@ class MenuzController extends Controller
 
             $post = new Menuz();
             $post->menu = $request->menu;
-            $post->id = $request->content;
+            $post->id = $request->menu_id;
+            $post->menu_id = $request->menu_id;
 
             $post->save();
             return response()->json($post);
         }
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function show($id)
     {
         $post = Menuz::findOrFail($id);
         return view('menuz.show', ['post' => $post]);
     }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function edit($id)
     {
         //
     }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function update(Request $request, $id)
     {
         $validator = Validator::make(Input::all(), $this->rules);
@@ -107,22 +81,13 @@ class MenuzController extends Controller
             return response()->json($post);
         }
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function destroy($id)
     {
         $post = Menuz::findOrFail($id);
         $post->delete();
         return response()->json($post);
     }
-    /**
-     * Change resource status.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
    
 }

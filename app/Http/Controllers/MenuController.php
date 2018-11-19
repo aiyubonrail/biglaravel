@@ -21,11 +21,7 @@ class MenuController extends Controller {
     [
         'menu' => 'required|min:2|max:32|regex:/^[a-z ,.\'-]+$/i',
     ];
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $posts = Menu::orderBy('menu_id', 'desc')->get();
@@ -34,21 +30,12 @@ class MenuController extends Controller {
         return view('menu.index', ['posts' => $posts]);
         
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     public function create()
     {
         //
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+   
     public function store(Request $request)
     {
          
@@ -65,34 +52,18 @@ class MenuController extends Controller {
             return back()->with('status', 'Menu baru berhasil ditambah');
         }
     }
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function show($id)
     {
         $post = Menu::findOrFail($id);
         return view('menu.show', ['post' => $post]);
     }
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit($id)
     {
         //
     }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function update(Request $request, $id)
     {
         $validator = Validator::make(Input::all(), $this->rules);
@@ -105,23 +76,15 @@ class MenuController extends Controller {
             return response()->json($post);
         }
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
+   
     public function destroy($id)
     {
         $post = Menu::findOrFail($id);
         $post->delete();
         return response()->json($post);
     }
-    /**
-     * Change resource status.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   
     
     public function storesubMenu(Request $request)
     {

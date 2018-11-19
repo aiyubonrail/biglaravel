@@ -37,7 +37,14 @@ Route::get('/menus', function(){
 Route::resource('menuz','MenuzController');
 
 Route::resource('submenu','SubmenuController');
-Route::get('delsubmenu/{id}','SubmenuController@destroy');
-Route::post('posts/changeStatus', array('as' => 'changeStatus', 'uses' => 'MenuController@update'));
 
+Route::prefix('super')->group(function () {
+  Route::get('/', 'SuperUserController@index')->name('super.dashboard');
+  Route::get('dashboard', 'SuperUserController@index')->name('super.dashboard');
+  Route::get('register', 'SuperUserController@create')->name('super.register');
+  Route::post('register', 'SuperUserController@store')->name('super.register.store');
+  Route::get('login', 'Auth\LoginController@login')->name('super.auth.login');
+  Route::post('login', 'Auth\LoginController@loginAdmin')->name('super.auth.loginAdmin');
+  Route::post('logout', 'Auth\LoginController@logout')->name('super.auth.logout');
 
+});

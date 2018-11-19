@@ -24,10 +24,10 @@ class DashboardController extends Controller
    // $results=DB::table('sub_menus')
    //  ->join('menus','menus.menu_id','=','sub_menus.menu_id')->get();
    //  return $results;
-         $data['menu'] = Menu::orderBy('menu_id', 'Desc')->get();
-    $data['submenu'] = DB::table('sub_menus')
-    ->join('menus','menus.menu_id','=','sub_menus.menu_id')->get();;
-        return view('home', ['data' => $data]);
+    $data['menu'] = Menu::orderBy('menu_id', 'Desc')->get();
+    $data['submenu'] = SubMenu::orderBy('id','desc')
+    ->join('menus','menus.menu_id','=','sub_menus.menu_id')->paginate(10);;
+        return view('admin.index', ['data' => $data]);
 
 
    	 }

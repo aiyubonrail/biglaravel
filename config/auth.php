@@ -17,7 +17,11 @@ return [
         'guard' => 'web',
         'passwords' => 'users',
     ],
-
+    
+    'super_users' => [
+        'driver' => 'eloquent',
+        'model' => App\SuperUser::class,
+    ],
     /*
     |--------------------------------------------------------------------------
     | Authentication Guards
@@ -35,18 +39,25 @@ return [
     |
     */
 
+    
     'guards' => [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
         ],
-
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
         ],
-    ],
-
+        'super' => [
+            'driver' => 'session',
+            'provider' => 'super_users',
+        ],
+        'super-api' => [
+            'driver' => 'token',
+            'provider' => 'super_users',
+        ],
+        ],
     /*
     |--------------------------------------------------------------------------
     | User Providers
@@ -69,7 +80,11 @@ return [
             'driver' => 'eloquent',
             'model' => App\User::class,
         ],
-
+        
+        'super_users' => [
+            'driver' => 'eloquent',
+            'model' => App\SuperUser::class,
+        ],
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
@@ -96,6 +111,12 @@ return [
             'provider' => 'users',
             'table' => 'password_resets',
             'expire' => 60,
+        ],
+        
+        'super_users' => [
+            'provider' => 'super_users',
+            'table' => 'password_resets',
+            'expire' => 15,
         ],
     ],
 

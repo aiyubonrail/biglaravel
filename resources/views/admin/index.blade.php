@@ -26,31 +26,41 @@
 
                     <div class="col-md-12 mb-4"><h3 style="font-weight: bold;padding: 5px"> Daftar Menu</b></h3>
 
-
           <!--Card-->
           <div class="card">
              
                <table class="table table-striped custab">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Menu</th>
-            <th>Submenu</th>
-        </tr>
-    </thead>@foreach($data['submenu'] as $key => $value)
-            <tr>
-                <td> 
-                    {{ $value->id }}</td>
-                <td>
-                            {{ $value->menu }}
+                  <thead>
+                      <tr> 
+                          <th>#</th>
+                          <th>ID</th>
+                          <th>Menu</th>
+                          <th>Submenu</th>
+                      </tr>
+                  </thead><tbody>
+                  @foreach($data['submenu'] as $key => $value)
+                          <tr>
+                            <td> 
+                                  {{ $key+1 }}
+                              </td>
+                              <td> 
+                                  {{ $value->id }}
+                              </td>
+                              <td>
+                                  {{ $value->menu }}
+                              </td>
+                               <td>
+                                  {{ $value->submenu }}
+                                </td>
+                              
+                            <td class="text-center">
+                          </tr>
+                @endforeach
+                </tbody>
+              </table>
 
-                </td>
-                <td>{{ $value->submenu }}</td>
-               
-            </tr>
-            @endforeach
-    </table>
-          </div>
+          </div>           <div class="text-center">   {{ $data['submenu']->links() }} </div>
+
             <!--Card content-->
               
 <div id="addMenu" class="modal fade" role="dialog">

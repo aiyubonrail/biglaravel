@@ -133,7 +133,10 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal" role="form">
-                          <?php $menu = \App\Menuz::orderBy('menu_id','desc')->get(); ?>
+                          <?php $menu = \App\Menuz::orderBy('menu_id','desc')->get(); 
+                            
+
+                          ?>
                             <div class="form-group">
                             <label class="control-label col-sm-2" for="menu">Menu:</label>
                             <div class="col-sm-10">
@@ -365,29 +368,9 @@
                         }
                     } else {
                         toastr.success('Submenu Berhasil ditambah!', 'Success Alert', {timeOut: 5000});
-                        $('#postTable').prepend("<tr class='item" + data.id + "'><td class='col1'>" + data.id + "</td><td>" + data.id + "</td><td>" + data.submenu + "</td><td class='text-center'>" + data.menu_id + "</td><td>Just now!</td><td><button class='show-modal btn btn-success' data-id='" + data.id + "' data-title='" + data.menu + "' data-content='" + data.menu + "'><span class='glyphicon glyphicon-eye-open'></span> Show</button> <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-title='" + data.menu + "' data-content='" + data.menu + "'><span class='glyphicon glyphicon-edit'></span> Edit</button> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-title='" + data.menu + "' data-content='" + data.menu + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
-                        $('.new_published').iCheck({
-                            checkboxClass: 'icheckbox_square-yellow',
-                            radioClass: 'iradio_square-yellow',
-                            increaseArea: '20%'
-                        });
-                        $('.new_published').on('ifToggled', function(event){
-                            $(this).closest('tr').toggleClass('warning');
-                        });
-                        $('.new_published').on('ifChanged', function(event){
-                            id = $(this).data('id');
-                            $.ajax({
-                                type: 'POST',
-                                url: "{{ URL::route('changeStatus') }}",
-                                data: {
-                                    '_token': $('input[name=_token]').val(),
-                                    'id': id
-                                },
-                                success: function(data) {
-                                    // empty
-                                },
-                            });
-                        });
+                        $('#postTable').
+                        prepend("<tr class='item" + data.id + "'><td class='col1'>" + data.id + "</td><td>" + data.menu_id + "</td><td>" + data.submenu + "</td><td class='text-center'>" + data.menu_id + "</td><td>Just now!</td><td><button class='show-modal btn btn-success' data-id='" + data.id + "' data-menu='" + data.menu + "' data-submenu='" + data.submenu + "'><span class='glyphicon glyphicon-eye-open'></span> Show</button> <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-submenu_add='" + data.submenu + "' data-content='" + data.submenu + "'><span class='glyphicon glyphicon-edit'></span> Edit</button> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-title='" + data.menu + "' data-content='" + data.menu + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
+                        
                         $('.col1').each(function (index) {
                             $(this).html(index+1);
                         });
@@ -440,10 +423,9 @@
                             $('.errorContent').text(data.errors.content);
                         }
                     } else {
-                        toastr.success('Kategori Berhasil diupdate', 'Success Alert', {timeOut: 5000});
-                        $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td class='col1'>" + data.id + "</td><td>" + data.menu_id + "</td><td>" + data.submenu + "</td><td class='text-center'>" + data.menu_id +"</td><td>Right now</td><td><button class='show-modal btn btn-success' data-id='" + data.id + "' data-menu='" + data.menu_id  + "' data-content='" + data.menu_id + "'><span class='glyphicon glyphicon-eye-open'></span> Show</button> <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-menu='" + data.menu_id + "' data-submenu='" + data.menu_id + "'><span class='glyphicon glyphicon-edit'></span> Edit</button> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-menu='" + data.menu_id + "' data-submenu='" + data.menu + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
+                        toastr.success('Submenu Berhasil diupdate', 'Success Alert', {timeOut: 5000});
+                        $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td class='col1'>" + data.id + "</td><td>" + data.menu_id + "</td><td>" + data.submenu + "</td><td class='text-center'>" + data.menu_id + "</td><td>Just now!</td><td><button class='show-modal btn btn-success' data-id='" + data.id + "' data-menu='" + data.menu + "' data-submenu='" + data.submenu + "'><span class='glyphicon glyphicon-eye-open'></span> Show</button> <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-submenu_add='" + data.submenu + "' data-content='" + data.submenu + "'><span class='glyphicon glyphicon-edit'></span> Edit</button> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-title='" + data.menu + "' data-content='" + data.menu + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
                         
-                      
                         $('.col1').each(function (index) {
                             $(this).html(index+1);
                         });

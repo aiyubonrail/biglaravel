@@ -29,6 +29,10 @@ class HomeController extends Controller
     public function index()
     {
         
-        return view('home');
+        $data['menu'] = Menu::orderBy('menu_id', 'Desc')->get();
+        $data['submenu'] = DB::table('sub_menus')
+        ->join('menus','menus.menu_id','=','sub_menus.menu_id')->get();;
+        return view('home', ['data' => $data]);
+
     }
 }

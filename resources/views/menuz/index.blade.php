@@ -72,12 +72,12 @@
         <div class="panel panel-default">
             <div class="panel-heading">
                 <ul>
-                    <li><i class="fa fa-file-text-o"></i> All Menu</li>
-                    <a href="#" class="add-modal"><li>Add a Menu</li></a>
+                    <li><i class="fa fa-file-text-o"></i>Semua menu</li>
+                    <a href="#" class="add-modal"><li>Tambah Menu Baru</li></a>
                 </ul>
             </div>
-        <?php           $id = \App\Menuz::orderBy('id','desc')->limit(1)->get();
-                          
+        <?php           $id = \App\Menuz::orderBy('menu_id','desc')->limit(1)->get();
+
         ?>
             
             <div class="panel-body">                            
@@ -87,31 +87,24 @@
                         <thead>
                             <tr>
                                 <th valign="middle">#</th>
-                                <th>Id</th>
                                 <th>Menu</th>
-                                <th>Published?</th>
                                 <th>Last updated</th>
                                 <th>Actions</th>
                             </tr>
                             {{ csrf_field() }}
                         </thead>
                         <tbody>
-                            @foreach($posts as $indexKey => $post)
-                            
+                             @foreach($posts as $indexKey => $post)
                                 <tr class="item{{$post->id}} ">
                                     <td class="col1">{{ $indexKey+1 }}</td>
-                                    <td>{{$post->id}}</td>
-                                    <td>
-                                        {{App\Menuz::getExcerpt($post->menu)}}
-                                    </td>
-                                    <td class="text-center"><input type="checkbox" class="published" id="" data-id="{{$post->menu_id}}" ></td>
+                                    <td class="text-center">{{$post->menu}}</td>
                                     <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $post->updated_at)->diffForHumans() }}</td>
                                     <td>
-                                        <button class="show-modal btn btn-success" data-id="{{$post->menu_id}}" data-title="{{$post->menu}}" data-content="{{$post->menu}}">
+                                        <button class="show-modal btn btn-success" data-id="{{$post->menu_id}}" data-menu="{{$post->menu}}" data-submenu="{{$post->submenu}}">
                                         <span class="glyphicon glyphicon-eye-open"></span> Show</button>
-                                        <button class="edit-modal btn btn-info" data-id="{{$post->menu_id}}" data-title="{{$post->menu}}" data-content="{{$post->menu}}">
+                                        <button class="edit-modal btn btn-info" data-id="{{$post->menu_id}}" data-menu="{{$post->menu}}">
                                         <span class="glyphicon glyphicon-edit"></span> Edit</button>
-                                        <button class="delete-modal btn btn-danger" data-id="{{$post->id}}" data-title="{{$post->menu}}" data-content="{{$post->menu}}">
+                                        <button class="delete-modal btn btn-danger" data-id="{{$post->menu_id}}" data-menu="{{$post->menu}}">
                                         <span class="glyphicon glyphicon-trash"></span> Delete</button>
                                     </td>
                                 </tr>
@@ -134,17 +127,19 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal" role="form">
+                         
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="title">Menu:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="title_add" autofocus>
+                                <input type="text" class="form-control" id="menu_add" autofocus>
                                 <small>Min: 2, Max: 32, only text</small>
                                 <p class="errorTitle text-center alert alert-danger hidden"></p>
                             </div>
                         </div>
+
                         <div class="form-group">
                             <div class="col-sm-10">
-                                <input type='hidden' class="form-control" id="content_add" value="{{  $id[0]->id+1 }}"></input>
+                                <input type='hidden' class="form-control" id="menu_id_add" value="{{  $id[0]->menu_id+1 }}"></input>
                                 <p class="errorContent text-center alert alert-danger hidden"></p>
                             </div>
                         </div>
@@ -179,17 +174,12 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="title">Title:</label>
+                            <label class="control-label col-sm-2" for="Menu">Menu:</label>
                             <div class="col-sm-10">
-                                <input type="name" class="form-control" id="title_show" disabled>
+                                <input type="name" class="form-control" id="menu_show" disabled>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2" for="content">Content:</label>
-                            <div class="col-sm-10">
-                                <textarea class="form-control" id="content_show" cols="40" rows="5" disabled></textarea>
-                            </div>
-                        </div>
+                      
                     </form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-warning" data-dismiss="modal">
@@ -218,19 +208,20 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="title">Title:</label>
+                            <label class="control-label col-sm-2" for="menu">Menu:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="title_edit" autofocus>
+                                <input type="text" class="form-control" id="menu_edit" autofocus>
                                 <p class="errorTitle text-center alert alert-danger hidden"></p>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2" for="content">Content:</label>
+                       <div class="form-group">
                             <div class="col-sm-10">
-                                <textarea class="form-control" id="content_edit" cols="40" rows="5"></textarea>
-                                <p class="errorContent text-center alert alert-danger hidden"></p>
+                                <input type="hidden" class="form-control" id="id_edit" autofocus disabled>
+                                <p class="errorTitle text-center alert alert-danger hidden"></p>
                             </div>
                         </div>
+                      
+                      
                     </form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary edit" data-dismiss="modal">
@@ -254,7 +245,7 @@
                     <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
-                    <h3 class="text-center">Are you sure you want to delete the following post?</h3>
+                    <h3 class="text-center">Apakah anda yakin untuk menghapus menu ini?</h3>
                     <br />
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
@@ -264,11 +255,12 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="title">Title:</label>
+                            <label class="control-label col-sm-2" for="menu">Menu:</label>
                             <div class="col-sm-10">
-                                <input type="name" class="form-control" id="title_delete" disabled>
+                                <input type="name" class="form-control" id="menu_delete" disabled>
                             </div>
                         </div>
+                        
                     </form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger delete" data-dismiss="modal">
@@ -310,7 +302,7 @@
     <script type="text/javascript">
         // add a new post
         $(document).on('click', '.add-modal', function() {
-            $('.modal-title').text('Tambah Menu');
+            $('.modal-title').text('Tambah Menu Baru');
             $('#addModal').modal('show');
         });
         $('.modal-footer').on('click', '.add', function() {
@@ -319,8 +311,9 @@
                 url: 'menuz',
                 data: {
                     '_token': $('input[name=_token]').val(),
-                    'menu': $('#title_add').val(),
-                    'content': $('#content_add').val()
+                    'menu': $('#menu_add').val(),
+                    'menu_id': $('#menu_id_add').val(),
+
                 },
                 success: function(data) {
                     $('.errorTitle').addClass('hidden');
@@ -339,30 +332,9 @@
                             $('.errorContent').text(data.errors.menu);
                         }
                     } else {
-                        toastr.success('Kategori Berhasil ditambah!', 'Success Alert', {timeOut: 5000});
-                        $('#postTable').prepend("<tr class='item" + data.id + "'><td class='col1'>" + data.id + "</td><td>" + data.id + "</td><td>" + data.menu + "</td><td class='text-center'><input type='checkbox' class='new_published' data-id='" + data.id + " '></td><td>Just now!</td><td><button class='show-modal btn btn-success' data-id='" + data.id + "' data-title='" + data.menu + "' data-content='" + data.menu + "'><span class='glyphicon glyphicon-eye-open'></span> Show</button> <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-title='" + data.menu + "' data-content='" + data.menu + "'><span class='glyphicon glyphicon-edit'></span> Edit</button> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-title='" + data.menu + "' data-content='" + data.menu + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
-                        $('.new_published').iCheck({
-                            checkboxClass: 'icheckbox_square-yellow',
-                            radioClass: 'iradio_square-yellow',
-                            increaseArea: '20%'
-                        });
-                        $('.new_published').on('ifToggled', function(event){
-                            $(this).closest('tr').toggleClass('warning');
-                        });
-                        $('.new_published').on('ifChanged', function(event){
-                            id = $(this).data('id');
-                            $.ajax({
-                                type: 'POST',
-                                url: "{{ URL::route('changeStatus') }}",
-                                data: {
-                                    '_token': $('input[name=_token]').val(),
-                                    'id': id
-                                },
-                                success: function(data) {
-                                    // empty
-                                },
-                            });
-                        });
+                        toastr.success('Menu Baru Berhasil ditambah!', 'Success Alert', {timeOut: 5000});
+                        $('#postTable').prepend("<tr class='item" + data.id + "'><td class='col1'>" + data.id + "</td><td>" + data.menu + "</td><td>Just now!</td><td><button class='show-modal btn btn-success' data-id='" + data.id + "' data-menu='" + data.menu + "'><span class='glyphicon glyphicon-eye-open'></span> Show</button> <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-menu='" + data.menu + "'><span class='glyphicon glyphicon-edit'></span> Edit</button> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-menu='" + data.menu + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
+                        
                         $('.col1').each(function (index) {
                             $(this).html(index+1);
                         });
@@ -374,16 +346,14 @@
         $(document).on('click', '.show-modal', function() {
             $('.modal-title').text('Show');
             $('#id_show').val($(this).data('id'));
-            $('#title_show').val($(this).data('title'));
-            $('#content_show').val($(this).data('content'));
+            $('#menu_show').val($(this).data('menu'));
             $('#showModal').modal('show');
         });
         // Edit a post
         $(document).on('click', '.edit-modal', function() {
             $('.modal-title').text('Edit');
             $('#id_edit').val($(this).data('id'));
-            $('#title_edit').val($(this).data('title'));
-            $('#content_edit').val($(this).data('content'));
+            $('#menu_edit').val($(this).data('menu'));
             id = $('#id_edit').val();
             $('#editModal').modal('show');
         });
@@ -393,9 +363,8 @@
                 url: 'menuz/' + id,
                 data: {
                     '_token': $('input[name=_token]').val(),
-                    'id': $("#id_edit").val(),
-                    'menu': $('#title_edit').val(),
-                    'content': $('#content_edit').val()
+                    'id': $("#menu_id_edit").val(),
+                    'menu': $('#menu_edit').val(),
                 },
                 success: function(data) {
                     $('.errorTitle').addClass('hidden');
@@ -415,33 +384,9 @@
                         }
                     } else {
                         toastr.success('Kategori Berhasil diupdate', 'Success Alert', {timeOut: 5000});
-                        $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td class='col1'>" + data.id + "</td><td>" + data.id + "</td><td>" + data.menu + "</td><td class='text-center'><input type='checkbox' class='edit_published' data-id='" + data.id + "'></td><td>Right now</td><td><button class='show-modal btn btn-success' data-id='" + data.id + "' data-title='" + data.menu  + "' data-content='" + data.menu + "'><span class='glyphicon glyphicon-eye-open'></span> Show</button> <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-title='" + data.menu + "' data-content='" + data.menu + "'><span class='glyphicon glyphicon-edit'></span> Edit</button> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-title='" + data.menu + "' data-content='" + data.menu + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
-                        if (data.is_published) {
-                            $('.edit_published').prop('checked', true);
-                            $('.edit_published').closest('tr').addClass('warning');
-                        }
-                        $('.edit_published').iCheck({
-                            checkboxClass: 'icheckbox_square-yellow',
-                            radioClass: 'iradio_square-yellow',
-                            increaseArea: '20%'
-                        });
-                        $('.edit_published').on('ifToggled', function(event) {
-                            $(this).closest('tr').toggleClass('warning');
-                        });
-                        $('.edit_published').on('ifChanged', function(event){
-                            id = $(this).data('id');
-                            $.ajax({
-                                type: 'POST',
-                                url: "{{ URL::route('changeStatus') }}",
-                                data: {
-                                    '_token': $('input[name=_token]').val(),
-                                    'id': id
-                                },
-                                success: function(data) {
-                                    // empty
-                                },
-                            });
-                        });
+                        $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td class='col1'>" + data.id + "</td><td>" + data.menu + "</td><td>Right now</td><td><button class='show-modal btn btn-success' data-id='" + data.id + "' data-menu='" + data.menu_id  + "' data-content='" + data.menu_id + "'><span class='glyphicon glyphicon-eye-open'></span> Show</button> <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-menu='" + data.menu_id + "' data-submenu='" + data.menu_id + "'><span class='glyphicon glyphicon-edit'></span> Edit</button> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-menu='" + data.menu_id + "' data-submenu='" + data.menu + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
+                        
+                      
                         $('.col1').each(function (index) {
                             $(this).html(index+1);
                         });
@@ -454,7 +399,8 @@
         $(document).on('click', '.delete-modal', function() {
             $('.modal-title').text('Delete');
             $('#id_delete').val($(this).data('id'));
-            $('#title_delete').val($(this).data('title'));
+            $('#menu_delete').val($(this).data('menu'));
+
             $('#deleteModal').modal('show');
             id = $('#id_delete').val();
         });
@@ -466,7 +412,7 @@
                     '_token': $('input[name=_token]').val(),
                 },
                 success: function(data) {
-                    toastr.success('Kategori Berhasil dihapus!', 'Success Alert', {timeOut: 5000});
+                    toastr.success('Menu Berhasil dihapus!', 'Success Alert', {timeOut: 5000});
                     $('.item' + data['id']).remove();
                     $('.col1').each(function (index) {
                         $(this).html(index+1);

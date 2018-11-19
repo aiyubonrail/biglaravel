@@ -14,7 +14,11 @@ class CreateSuperUsersTable extends Migration
     public function up()
     {
         Schema::create('super_users', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id_superuser');
+            $table->string('name');
+            $table->string('username')->unique();
+            $table->string('password');
+            $table->integer('id_admin');
             $table->timestamps();
         });
     }
