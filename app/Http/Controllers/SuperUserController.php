@@ -2,6 +2,12 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\SuperUser;
+use Illuminate\Support\Str;
+use App\VerifyUser;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Foundation\Auth\RegistersUsers;
 
 class SuperUserController extends Controller
 {
@@ -16,7 +22,7 @@ class SuperUserController extends Controller
      */
     public function index()
     {
-        return view('super.dashboard');
+        return view('superuser.dashboard');
     }
     /**
      * Show the form for creating a new resource.
@@ -25,6 +31,7 @@ class SuperUserController extends Controller
      */
     public function create()
     {
+
         return view('superuser.auth.register');
     }
     /**
@@ -33,22 +40,28 @@ class SuperUserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'name' => 'required|string|max:255',
+            'username' => 'required|string|email|max:55|unique:users',
+        ]);
+    }
+
     public function store(Request $request)
     {
-        // validate the data
-        $this->validate($request, [
-          'name'        => 'required',
-          'username'    => 'required'|'without_space',
-          'id_admin'	=> 'required',
-          'password'    => 'required'
-        ]);
+        
+
         // store in the database
+        $pwd = Str::random(6);
+
         $super_users = new SuperUser;
-        $admins->name = $request->name;
-        $admins->username = $request->username;
-        $admins->id_admin = $request->id_admin;
-        $admins->password=bcrypt($request->password);
-        $admins->save();
+        $super_users->name = $request->name;
+        $super_users->username = $request->username;
+        $super_users->id_admin = $request->id;
+        $super_users->password=Hash::make($pwd);
+        $super_users->save();
         return redirect()->route('super.auth.login');
     }
     /**
