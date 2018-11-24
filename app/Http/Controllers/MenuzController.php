@@ -12,7 +12,11 @@ use View;
 use DB;
 class MenuzController extends Controller
 {
-    
+    public function __construct()
+        {
+            $this->middleware('guest:super');
+        }
+
     protected $rules =
     [
         'menu' => 'required|min:2|max:32|regex:/^[a-z ,.\'-]+$/i',

@@ -65,24 +65,50 @@
 
 </head>
 
-<body>
+<body>                    
+        
     <div class="col-md-8 col-md-offset-2">
         <h2 class="text-center">Manage Menu</h2>
-        <br />
+        <br />@if(!Session::get('login'))
+
+                {{ 'Anda tidak memiliki akses kesini, silahkan login sebagai super terlebih dahulu' }};
+                
+                    <a href="{{ url('admin') }}" class="btn btn-default">Back</a>
+
+        @else 
+
+           
+        
         <div class="panel panel-default">
             <div class="panel-heading">
                 <ul>
                     <li><i class="fa fa-file-text-o"></i>Semua menu</li>
                     <a href="#" class="add-modal"><li>Tambah Menu Baru</li></a>
+                    <a href="{{ url('submenu') }}" ><li>Tambah SubMenu Baru</li></a>
+                    <a href="{{ url('admin') }}" ><li>Kembali kedashboard</li></a>
+                    <a href="{{ url('superuser/logout') }}"><li>Logout</li></a>
+
+
                 </ul>
             </div>
+             @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                           
+                  
+
+                        @else
+
+                          
+
         <?php           $id = \App\Menuz::orderBy('menu_id','desc')->limit(1)->get();
 
         ?>
             
             <div class="panel-body">                            
                
-
+                                        
                     <table class="table table-striped table-bordered table-hover" id="postTable" style="visibility: hidden;">
                         <thead>
                             <tr>
@@ -422,5 +448,16 @@
         });
     </script>
 
+                                           
+
+
+
+
+
+
+
+  @endguest
+
+@endif
 </body>
 </html>

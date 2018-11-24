@@ -48,18 +48,28 @@ class Handler extends ExceptionHandler
     }
     protected function unauthenticated($request, AuthenticationException $exception)
     {
+    //     if ($request->expectsJson()) {
+    //         return response()->json(['error' => 'Unauthenticated.'], 401);
+    //     }
+    //     $guard = array_get($exception->guards(), 0);
+    //     switch ($guard) {
+    //       case 'super':
+    //         $login = 'super.auth.login';
+    //         break;
+    //       default:
+    //         $login = 'login';
+    //         break;
+    //     }
+    //     return redirect()->guest(route($login));
+    // }
+
         if ($request->expectsJson()) {
-            return response()->json(['error' => 'Unauthenticated.'], 401);
+                return response()->json(['error' => 'Unauthenticated.'], 401);
+            }
+            if ($request->is('super') || $request->is('super/*')) {
+                return redirect()->guest('/superuser/login');
+            }
+           
+            return redirect()->guest(route('login'));
         }
-        $guard = array_get($exception->guards(), 0);
-        switch ($guard) {
-          case 'super':
-            $login = 'super.auth.login';
-            break;
-          default:
-            $login = 'login';
-            break;
-        }
-        return redirect()->guest(route($login));
-    }
 }

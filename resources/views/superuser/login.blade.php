@@ -1,4 +1,4 @@
-@extends('layouts.super')
+@extends('layouts.app')
 
 @section('content')
 <div class="container">
@@ -18,16 +18,14 @@
                             {{ session('warning') }}
                         </div>
                     @endif
-                    <div class="card-header">{{ __('Super User Login') }}</div>
-                    <div class="card-body">
-                      <form method="POST" action="{{ route('super.login.submit') }}">                        
+                    <form method="POST" action="{{ route('super.auth.loginAdmin') }}">
                         @csrf
 
                         <div class="form-group row">
                             <label for="email" class="col-sm-4 col-form-label text-md-right">{{ __('Username') }}</label>
 
                             <div class="col-md-6">
-                                <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required autofocus>
+                                <input id="username" type="username" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required autofocus>
 
                                 @if ($errors->has('username'))
                                     <span class="invalid-feedback" role="alert">

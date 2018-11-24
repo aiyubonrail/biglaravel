@@ -13,7 +13,7 @@
     <!-- CSFR token for ajax call -->
     <meta name="_token" content="{{ csrf_token() }}"/>
 
-    <title>Manage Sub Menu</title>
+    <title>Manage Menu</title>
     
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -67,26 +67,42 @@
 
 <body>
     <div class="col-md-8 col-md-offset-2">
-        <h2 class="text-center">Manage Sub Menu</h2>
-        <br />@if(!Session::get('login'))
-
-                {{ 'Anda tidak memiliki akses kesini, silahkan login sebagai super terlebih dahulu' }};
-                
-                    <a href="{{ url('admin') }}" class="btn btn-default">Back</a>
-
-        @else 
-
+        <h2 class="text-center">Manage Menu</h2>
+        <br />
         <div class="panel panel-default">
             <div class="panel-heading">
                 <ul>
-                    <li><i class="fa fa-file-text-o"></i>Semua Submenu</li>
-                    <a href="#" class="add-modal"><li>Tambah Submenu</li></a>
-                    <a href="{{ url('menuz') }}" ><li>Halaman Menu </li></a>
-                    <a href="{{ url('admin') }}" ><li>Kembali kedashboard</li></a>
-                    <a href="{{ url('superuser/logout') }}"><li>Logout</li></a>
+                    <li><i class="fa fa-file-text-o"></i>Semua menu</li>
+                    <a href="#" class="add-modal"><li>Tambah Menu Baru</li></a>
                 </ul>
             </div>
-        <?php           $id = \App\SubMenu::orderBy('id','desc')->limit(1)->get();
+             @guest
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                            </li>
+                           
+                  
+
+                        @else
+                            <li class="nav-item dropdown">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre> 
+                                    <span class="caret"></span>
+                                </a>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                      
+        <?php           $id = \App\Menuz::orderBy('menu_id','desc')->limit(1)->get();
 
         ?>
             
@@ -97,8 +113,6 @@
                         <thead>
                             <tr>
                                 <th valign="middle">#</th>
-                                <th>Id Menu</th>
-                                <th>Submenu</th>
                                 <th>Menu</th>
                                 <th>Last updated</th>
                                 <th>Actions</th>
@@ -106,21 +120,17 @@
                             {{ csrf_field() }}
                         </thead>
                         <tbody>
-                             @foreach($submenu as $indexKey => $post)
+                             @foreach($data as $indexKey => $post)
                                 <tr class="item{{$post->id}} ">
                                     <td class="col1">{{ $indexKey+1 }}</td>
-                                    <td>{{$post->menu_id}}</td>
-                                    <td>
-                                        {{App\SubMenu::getExcerpt($post->submenu)}}
-                                    </td>
                                     <td class="text-center">{{$post->menu}}</td>
                                     <td>{{ \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $post->updated_at)->diffForHumans() }}</td>
                                     <td>
-                                        <button class="show-modal btn btn-success" data-id="{{$post->id}}" data-menu="{{$post->menu}}" data-submenu="{{$post->submenu}}">
+                                        <button class="show-modal btn btn-success" data-id="{{$post->menu_id}}" data-menu="{{$post->menu}}" data-submenu="{{$post->submenu}}">
                                         <span class="glyphicon glyphicon-eye-open"></span> Show</button>
-                                        <button class="edit-modal btn btn-info" data-id="{{$post->id}}" data-menu="{{$post->menu}}" data-menu_id="{{$post->menu_id}}" data-submenu="{{$post->submenu}}">
+                                        <button class="edit-modal btn btn-info" data-id="{{$post->menu_id}}" data-menu="{{$post->menu}}">
                                         <span class="glyphicon glyphicon-edit"></span> Edit</button>
-                                        <button class="delete-modal btn btn-danger" data-id="{{$post->id}}" data-menu="{{$post->menu}}" data-submenu="{{$post->submenu}}">
+                                        <button class="delete-modal btn btn-danger" data-id="{{$post->menu_id}}" data-menu="{{$post->menu}}">
                                         <span class="glyphicon glyphicon-trash"></span> Delete</button>
                                     </td>
                                 </tr>
@@ -143,25 +153,11 @@
                 </div>
                 <div class="modal-body">
                     <form class="form-horizontal" role="form">
-                          <?php $menu = \App\Menuz::orderBy('menu_id','desc')->get(); 
-                            
-
-                          ?>
-                            <div class="form-group">
-                            <label class="control-label col-sm-2" for="menu">Menu:</label>
-                            <div class="col-sm-10">
-                                <select type="text" class="form-control" id="menu_add" autofocus>
-                                    @foreach($menu as $kmn => $vmn )
-                                    <option value="{{ $vmn->menu_id }}"> {{ $vmn->menu}} </option>
-                                    @endforeach
-                                </select>
-                                <p class="errorTitle text-center alert alert-danger hidden"></p>
-                            </div>
-                        </div>
+                         
                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="title">Submenu:</label>
+                            <label class="control-label col-sm-2" for="title">Menu:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="submenu_add" autofocus>
+                                <input type="text" class="form-control" id="menu_add" autofocus>
                                 <small>Min: 2, Max: 32, only text</small>
                                 <p class="errorTitle text-center alert alert-danger hidden"></p>
                             </div>
@@ -169,7 +165,7 @@
 
                         <div class="form-group">
                             <div class="col-sm-10">
-                                <input type='hidden' class="form-control" id="content_add" value="{{  $id[0]->id+1 }}"></input>
+                                <input type='hidden' class="form-control" id="menu_id_add" value="{{  $id[0]->menu_id+1 }}"></input>
                                 <p class="errorContent text-center alert alert-danger hidden"></p>
                             </div>
                         </div>
@@ -209,12 +205,7 @@
                                 <input type="name" class="form-control" id="menu_show" disabled>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-sm-2" for="submenu">Submenu:</label>
-                            <div class="col-sm-10">
-                                <input type="text" class="form-control" id="submenu_show" cols="40" rows="5" disabled></textarea>
-                            </div>
-                        </div>
+                      
                     </form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-warning" data-dismiss="modal">
@@ -245,24 +236,18 @@
                         <div class="form-group">
                             <label class="control-label col-sm-2" for="menu">Menu:</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="menu_edit" autofocus disabled>
+                                <input type="text" class="form-control" id="menu_edit" autofocus>
                                 <p class="errorTitle text-center alert alert-danger hidden"></p>
                             </div>
                         </div>
                        <div class="form-group">
                             <div class="col-sm-10">
-                                <input type="hidden" class="form-control" id="menu_id_edit" autofocus disabled>
+                                <input type="hidden" class="form-control" id="id_edit" autofocus disabled>
                                 <p class="errorTitle text-center alert alert-danger hidden"></p>
                             </div>
                         </div>
                       
-                        <div class="form-group">
-                            <label class="control-label col-sm-2" for="submenu">Submenu: </label>
-                            <div class="col-sm-10">
-                                <input type="text"  class="form-control" id="submenu_edit" cols="40" rows="5"></input>
-                                <p class="errorContent text-center alert alert-danger hidden"></p>
-                            </div>
-                        </div>
+                      
                     </form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary edit" data-dismiss="modal">
@@ -286,7 +271,7 @@
                     <h4 class="modal-title"></h4>
                 </div>
                 <div class="modal-body">
-                    <h3 class="text-center">Are you sure you want to delete the following post?</h3>
+                    <h3 class="text-center">Apakah anda yakin untuk menghapus menu ini?</h3>
                     <br />
                     <form class="form-horizontal" role="form">
                         <div class="form-group">
@@ -301,12 +286,7 @@
                                 <input type="name" class="form-control" id="menu_delete" disabled>
                             </div>
                         </div>
-                         <div class="form-group">
-                            <label class="control-label col-sm-2" for="menu">Submenu:</label>
-                            <div class="col-sm-10">
-                                <input type="name" class="form-control" id="submenu_delete" disabled>
-                            </div>
-                        </div>
+                        
                     </form>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-danger delete" data-dismiss="modal">
@@ -348,17 +328,18 @@
     <script type="text/javascript">
         // add a new post
         $(document).on('click', '.add-modal', function() {
-            $('.modal-title').text('Tambah Submenu');
+            $('.modal-title').text('Tambah Menu Baru');
             $('#addModal').modal('show');
         });
         $('.modal-footer').on('click', '.add', function() {
             $.ajax({
                 type: 'POST',
-                url: 'submenu',
+                url: 'menuz',
                 data: {
                     '_token': $('input[name=_token]').val(),
                     'menu': $('#menu_add').val(),
-                    'submenu': $('#submenu_add').val()
+                    'menu_id': $('#menu_id_add').val(),
+
                 },
                 success: function(data) {
                     $('.errorTitle').addClass('hidden');
@@ -377,9 +358,8 @@
                             $('.errorContent').text(data.errors.menu);
                         }
                     } else {
-                        toastr.success('Submenu Berhasil ditambah!', 'Success Alert', {timeOut: 5000});
-                        $('#postTable').
-                        prepend("<tr class='item" + data.id + "'><td class='col1'>" + data.id + "</td><td>" + data.menu_id + "</td><td>" + data.submenu + "</td><td class='text-center'>" + data.menu_id + "</td><td>Just now!</td><td><button class='show-modal btn btn-success' data-id='" + data.id + "' data-menu='" + data.menu + "' data-submenu='" + data.submenu + "'><span class='glyphicon glyphicon-eye-open'></span> Show</button> <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-submenu_add='" + data.submenu + "' data-content='" + data.submenu + "'><span class='glyphicon glyphicon-edit'></span> Edit</button> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-title='" + data.menu + "' data-content='" + data.menu + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
+                        toastr.success('Menu Baru Berhasil ditambah!', 'Success Alert', {timeOut: 5000});
+                        $('#postTable').prepend("<tr class='item" + data.id + "'><td class='col1'>" + data.id + "</td><td>" + data.menu + "</td><td>Just now!</td><td><button class='show-modal btn btn-success' data-id='" + data.id + "' data-menu='" + data.menu + "'><span class='glyphicon glyphicon-eye-open'></span> Show</button> <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-menu='" + data.menu + "'><span class='glyphicon glyphicon-edit'></span> Edit</button> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-menu='" + data.menu + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
                         
                         $('.col1').each(function (index) {
                             $(this).html(index+1);
@@ -393,7 +373,6 @@
             $('.modal-title').text('Show');
             $('#id_show').val($(this).data('id'));
             $('#menu_show').val($(this).data('menu'));
-            $('#submenu_show').val($(this).data('submenu'));
             $('#showModal').modal('show');
         });
         // Edit a post
@@ -401,20 +380,17 @@
             $('.modal-title').text('Edit');
             $('#id_edit').val($(this).data('id'));
             $('#menu_edit').val($(this).data('menu'));
-            $('#menu_id_edit').val($(this).data('menu_id'));
-            $('#submenu_edit').val($(this).data('submenu'));
             id = $('#id_edit').val();
             $('#editModal').modal('show');
         });
         $('.modal-footer').on('click', '.edit', function() {
             $.ajax({
                 type: 'PUT',
-                url: 'submenu/' + id,
+                url: 'menuz/' + id,
                 data: {
                     '_token': $('input[name=_token]').val(),
-                    'id': $("#id_edit").val(),
-                    'menu': $('#menu_id_edit').val(),
-                    'submenu': $('#submenu_edit').val()
+                    'id': $("#menu_id_edit").val(),
+                    'menu': $('#menu_edit').val(),
                 },
                 success: function(data) {
                     $('.errorTitle').addClass('hidden');
@@ -433,9 +409,10 @@
                             $('.errorContent').text(data.errors.content);
                         }
                     } else {
-                        toastr.success('Submenu Berhasil diupdate', 'Success Alert', {timeOut: 5000});
-                        $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td class='col1'>" + data.id + "</td><td>" + data.menu_id + "</td><td>" + data.submenu + "</td><td class='text-center'>" + data.menu_id + "</td><td>Just now!</td><td><button class='show-modal btn btn-success' data-id='" + data.id + "' data-menu='" + data.menu + "' data-submenu='" + data.submenu + "'><span class='glyphicon glyphicon-eye-open'></span> Show</button> <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-submenu_add='" + data.submenu + "' data-content='" + data.submenu + "'><span class='glyphicon glyphicon-edit'></span> Edit</button> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-title='" + data.menu + "' data-content='" + data.menu + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
+                        toastr.success('Kategori Berhasil diupdate', 'Success Alert', {timeOut: 5000});
+                        $('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td class='col1'>" + data.id + "</td><td>" + data.menu + "</td><td>Right now</td><td><button class='show-modal btn btn-success' data-id='" + data.id + "' data-menu='" + data.menu_id  + "' data-content='" + data.menu_id + "'><span class='glyphicon glyphicon-eye-open'></span> Show</button> <button class='edit-modal btn btn-info' data-id='" + data.id + "' data-menu='" + data.menu_id + "' data-submenu='" + data.menu_id + "'><span class='glyphicon glyphicon-edit'></span> Edit</button> <button class='delete-modal btn btn-danger' data-id='" + data.id + "' data-menu='" + data.menu_id + "' data-submenu='" + data.menu + "'><span class='glyphicon glyphicon-trash'></span> Delete</button></td></tr>");
                         
+                      
                         $('.col1').each(function (index) {
                             $(this).html(index+1);
                         });
@@ -448,7 +425,6 @@
         $(document).on('click', '.delete-modal', function() {
             $('.modal-title').text('Delete');
             $('#id_delete').val($(this).data('id'));
-            $('#submenu_delete').val($(this).data('submenu'));
             $('#menu_delete').val($(this).data('menu'));
 
             $('#deleteModal').modal('show');
@@ -457,12 +433,12 @@
         $('.modal-footer').on('click', '.delete', function() {
             $.ajax({
                 type: 'DELETE',
-                url: 'submenu/' + id,
+                url: 'menuz/' + id,
                 data: {
                     '_token': $('input[name=_token]').val(),
                 },
                 success: function(data) {
-                    toastr.success('Submenu Berhasil dihapus!', 'Success Alert', {timeOut: 5000});
+                    toastr.success('Menu Berhasil dihapus!', 'Success Alert', {timeOut: 5000});
                     $('.item' + data['id']).remove();
                     $('.col1').each(function (index) {
                         $(this).html(index+1);
@@ -471,6 +447,6 @@
             });
         });
     </script>
-@endif
+  @endguest
 </body>
 </html>

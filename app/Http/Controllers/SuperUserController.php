@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Session;
 
 class SuperUserController extends Controller
 {
@@ -44,7 +45,7 @@ class SuperUserController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:155',
             'username' => 'required|string|email|max:55|unique:users',
         ]);
     }
@@ -62,8 +63,10 @@ class SuperUserController extends Controller
         $super_users->id_admin = $request->id;
         $super_users->password=Hash::make($pwd);
         $super_users->save();
-        return redirect()->route('super.auth.login');
-    }
+    
+        return redirect()->back()        
+        ->with('status', 'Super User Baru berhasil ditambah. Username : '.$super_users->username.' - Password: '.$pwd);
+        }
     /**
      * Display the specified resource.
      *
@@ -104,5 +107,36 @@ class SuperUserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function loginSuper(Request $request){
+        
+        $username = $request->username;
+        $password = $request->password;
+        $data = SuperUser::where('username',$username)->first();
+        
+        if($data){ 
+            if(Hash::check($password,$data->password)){
+                Session::put('name',$data->name);
+                Session::put('username',$data->username);
+                Session::put('login',TRUE);
+                Session::push('super.user', $data);
+
+                return redirect('menuz');
+
+            }
+            else{
+                return redirect('dashboard')->with('status','Password atau username, Salah !'.Hash::check($password,$data->password));
+            }
+        }
+        else{
+            return redirect('dashboard')->with('status','Password atau username, Salah!');
+        }
+    }
+
+    public function logout(){
+        Session::flush();
+        return redirect('admin')->with('status','Anda sudah logout dari super user');
     }
 }

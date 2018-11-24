@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Menu;
+use App\Menuz;
 use App\SubMenu;
 use DB;
 
@@ -29,9 +29,9 @@ class HomeController extends Controller
     public function index()
     {
         
-        $data['menu'] = Menu::orderBy('menu_id', 'Desc')->get();
+        $data['menu'] = Menuz::orderBy('menu_id', 'Desc')->get();
         $data['submenu'] = DB::table('sub_menus')
-        ->join('menus','menus.menu_id','=','sub_menus.menu_id')->get();;
+        ->join('menuz','menuz.menu_id','=','sub_menus.menu_id')->paginate(10);;
         return view('home', ['data' => $data]);
 
     }

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Menu;
+use App\Menuz;
 use App\SubMenu;
 use DB;
 
@@ -24,10 +24,10 @@ class DashboardController extends Controller
    // $results=DB::table('sub_menus')
    //  ->join('menus','menus.menu_id','=','sub_menus.menu_id')->get();
    //  return $results;
-    $data['menu'] = Menu::orderBy('menu_id', 'Desc')->get();
-    $data['submenu'] = SubMenu::orderBy('id','desc')
-    ->join('menus','menus.menu_id','=','sub_menus.menu_id')->paginate(10);;
-        return view('admin.index', ['data' => $data]);
+    $data['menu'] = Menuz::orderBy('menu_id', 'Desc')->get();
+    $data['submenu'] = SubMenu::orderBy('sub_menus.created_at','desc')
+    ->join('menuz','menuz.menu_id','=','sub_menus.menu_id')->paginate(10);;
+        return view('home', ['data' => $data]);
 
 
    	 }

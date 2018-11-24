@@ -1,10 +1,14 @@
 <?php
-namespace App\Http\Controllers\Auth\Admin;
+
+namespace App\Http\Controllers\Auth;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Auth;
-class SuperLoginController extends Controller
+
+class LoginSuperUserController extends Controller
+
 {
     /*
     |--------------------------------------------------------------------------
@@ -34,19 +38,19 @@ class SuperLoginController extends Controller
      */
     public function login()
     {
-        return view('superuser.auth.login');
+        return view('admin');
     }
     public function loginSuper(Request $request)
     {
       // Validate the form data
       $this->validate($request, [
-        'username'   => 'required|without_space',
+        'username'   => 'required',
         'password' => 'required|min:6'
       ]);
       // Attempt to log the user in
       if (Auth::guard('super')->attempt(['username' => $request->username, 'password' => $request->password], $request->remember)) {
         // if successful, then redirect to their intended location
-        return redirect()->intended(route('super.dashboard'));
+        return redirect()->intended(route('menuz'));
       }
       // if unsuccessful, then redirect back to the login with the form data
       return redirect()->back()->withInput($request->only('username', 'remember'));
@@ -54,6 +58,6 @@ class SuperLoginController extends Controller
     public function logout()
     {
         Auth::guard('super')->logout();
-        return redirect()->route('super.auth.login');
+        return redirect()->route('admin');
     }
 }

@@ -18,9 +18,12 @@
                     @endif
                     <button type="button" class="btn btn-primary form-control" data-toggle="modal" data-target="#addsuperuser" style="padding: 5px;margin-right:10px;width:30% "> Create Super User</button>
                    
-                    <a href='menuz' class="btn btn-primary form-control" style="padding: 5px;margin-right:10px;width:30% "> Create Menu</a>                
+                    <a href='#' class="btn btn-primary form-control" data-toggle="modal" data-target="#loginsuperuser" style="padding: 5px;margin-right:10px;width:30% "> Login Super User</a>                
                     
-                    <a href='submenu'  class="btn btn-primary form-control"  style="padding: 5px;margin-right:10px;width:30% "> Create Submenu</a>
+                    <a href="menuz"  class="btn btn-primary form-control"   style="padding: 5px;margin-right:10px;width:15% "> + Menu</a>
+
+                     <a href="submenu"  class="btn btn-primary form-control"  style="padding: 5px;margin-right:10px;width:15% "> + SubMenu</a>
+
 
 <p /><p />     
 
@@ -49,7 +52,9 @@
                
             </tr>
             @endforeach
-    </table>
+    </table><div class="text-center"> 
+       {{ $data['submenu']->links() }}
+</div>
           </div>
             <!--Card content-->
               
@@ -141,8 +146,8 @@
 
                   <!--firstName-->
                   <div class="md-form ">
-                    <input type="text" id="firstName" class="form-control" name="kode_menu">
-                    <label for="firstName" class="">Nama Lengkap</label>
+                    <input type="text" id="firstName" class="form-control" name="name">
+                    <label for="name" class="">Nama Lengkap</label>
                   </div>
 
                 </div>
@@ -153,39 +158,24 @@
 
                   <!--lastName-->
                   <div class="md-form">
-                    <input type="text" id="lastName" class="form-control" name="lastname">
+                    <input type="text" id="lastName" class="form-control" name="username">
                     <label for="lastName" class="">Username</label>
                   </div>
 
                 </div>
                 <!--Grid column-->
+              <div class="col-md-12 mb-2">
+                 <!--lastName-->
+                  <div class="md-form">
+                    <input type="hidden" id="id_admin" class="form-control" name="id" value="{{ Auth::user()->id }}">
+                  </div>
 
+                </div>
               </div>
                  <div class="row">
 
-                <!--Grid column-->
-                <div class="col-md-6 mb-2">
+           
 
-                  <!--firstName-->
-                  <div class="md-form ">
-                    <input type="text" id="hp" class="form-control" required="true" name="hp">
-                    <label for="Handphone" class="">username </label>
-                  </div>
-
-                </div>
-                <!--Grid column-->
-
-                <!--Grid column-->
-                <div class="col-md-6 mb-2">
-
-                  <!--lastName-->
-                  <div class="md-form">
-                     <input type="text" id="email" class="form-control" required="true" name="email">
-                      <label for="email" class="">password </label>
-                  </div>
-
-                </div>
-                <!--Grid column-->
 
               </div>
               <!--Grid row-->
@@ -207,6 +197,86 @@
            
               <hr class="mb-4">
               <button class="btn btn-primary btn-lg btn-block" type="submit">Register</button>
+
+            </form>
+            <!--Card content-->
+             </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="loginsuperuser" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">Login Superuser
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+              <div class="card">
+ {!! Form::open(array( 'class' => 'card-body', 'route' => 'super.login.submit')) !!}
+
+              <!--Grid row-->
+              <div class="row">
+
+                <!--Grid column-->
+                <div class="col-md-12 mb-2">
+
+                  <!--firstName-->
+                  <div class="md-form ">
+                    <input type="text" id="username" class="form-control" name="username">
+                    <label for="name" class="">Username</label>
+                  </div>
+
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-md-12 mb-2">
+
+                  <!--lastName-->
+                  <div class="md-form">
+                    <input type="text" id="password" class="form-control" name="password">
+                    <label for="lastName" class="">Password</label>
+                  </div>
+
+                </div>
+                <!--Grid column-->
+              <div class="col-md-12 mb-2">
+                 <!--lastName-->
+                  <div class="md-form">
+                    <input type="hidden" id="id_admin" class="form-control" name="id" value="{{ Auth::user()->id }}">
+                  </div>
+
+                </div>
+              </div>
+                 <div class="row">
+
+           
+
+
+              </div>
+              <!--Grid row-->
+
+              <!--Username-->
+              <!-- <div class="md-form input-group pl-0 mb-5">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">@</span>
+                </div>
+                <input type="text" class="form-control py-0" placeholder="Username" aria-describedby="basic-addon1">
+              </div> -->
+
+              <!--email-->
+        
+
+         
+              <hr>
+
+           
+              <hr class="mb-4">
+              <button class="btn btn-primary btn-lg btn-block" type="submit">Login</button>
 
             </form>
             <!--Card content-->

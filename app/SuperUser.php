@@ -11,6 +11,7 @@ class SuperUser extends Authenticatable
     use Notifiable;
 // The authentication guard for admin
     protected $guard = 'super';
+    
      /**
       * The attributes that are mass assignable.
       *

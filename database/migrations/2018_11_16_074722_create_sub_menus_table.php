@@ -19,6 +19,14 @@ class CreateSubMenusTable extends Migration
             $table->string('submenu');
             $table->timestamps();
         });
+
+        DB::table('sub_menus')->insert([
+                'menu_id' => '1',
+                'submenu' => 'Apel',
+                'created_at' =>'2018-11-24 05:16:08',
+                'updated_at' => '2018-11-24 05:16:08'
+            ]
+        );
     }
 
     /**
